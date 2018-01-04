@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, sans-serif;
+}
+
+body {
+  background-color: #333;
+}
+
+h4 {
+  text-align: center;
+  color: #f00;
+  font-size: 12px;
+  margin: 10px auto;
+}
+
+canvas {
+  margin: 0 auto;
+}
