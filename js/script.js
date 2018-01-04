@@ -35,7 +35,7 @@ function create() {
   layerWalls = walls.createLayer('Walls');
   // layerWalls.resizeWorld();
   
-  game.physics.arcade.gravity.y = 250;
+  game.physics.arcade.gravity.y = 200;
   
   em = game.add.sprite(100, 200, 'em');
   
