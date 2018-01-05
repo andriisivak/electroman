@@ -13,7 +13,7 @@ function preload() {
     game.load.image('PLAN2', '../img/PLAN2.png');
     game.load.image('PLAN3', '../img/PLAN3.png');
     game.load.image('PLAN4', '../img/PLAN4.png');
-    game.load.spritesheet('em', '../img/EM.png', 48, 75);
+    game.load.spritesheet('em', '../img/EM.png', 48, 84);
 }
 
 function create() {
@@ -23,31 +23,27 @@ function create() {
   // main background layer
   bg = game.add.tilemap('level1');
   bg.addTilesetImage('PLAN1');
-
   layerBg = bg.createLayer('Background');
   // layerBg.resizeWorld();
 
   // walls layer
   walls = game.add.tilemap('level1');
   walls.addTilesetImage('PLAN1');
-  walls.setCollision(true);
-
   layerWalls = walls.createLayer('Walls');
+  game.physics.enable(walls, Phaser.Physics.ARCADE);
   // layerWalls.resizeWorld();
-  
-  game.physics.arcade.gravity.y = 200;
-  
-  em = game.add.sprite(100, 200, 'em');
-  
-  game.physics.enable(em, Phaser.Physics.ARCADE);
-  
-  em.body.collideWorldBounds = true;
 
+  game.physics.arcade.gravity.y = 200;
+
+  // player
+  em = game.add.sprite(100, 200, 'em');
+  game.physics.enable(em, Phaser.Physics.ARCADE);
+  em.body.collideWorldBounds = true;
   game.camera.follow(em);
   
   cursors = game.input.keyboard.createCursorKeys();
 }
 
 function update() {
-  game.physics.arcade.collide(em, layerWalls);
+  game.physics.arcade.collide(em, walls);
 }
