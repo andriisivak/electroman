@@ -4,8 +4,9 @@ var game = new Phaser.Game(624, 384, Phaser.AUTO, '', {
   update: update
 });
 
-var em, bg, layerBg, walls, layerWalls, cursors;
+var em, bg, layerBg, walls, layerWalls, cursors, jumpButton;
 var facing = 'left';
+var jumpTimer = 0;
 
 function preload() {
   game.load.tilemap('level1', '../tilemap/em-tilemap.json', null,
@@ -40,22 +41,24 @@ function create() {
   // electroman
   em = game.add.sprite(100, 200, 'em');
   game.physics.enable(em, Phaser.Physics.ARCADE);
-  em.body.collideWorldBounds = true;
   
+  em.body.collideWorldBounds = true;
+
   em.animations.add('left', [0], 10, true);
   em.animations.add('turn', [0], 20, true);
   em.animations.add('right', [0], 10, true);
-  
+
   game.camera.follow(em);
-  
+
   cursors = game.input.keyboard.createCursorKeys();
+  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
 function update() {
   game.physics.arcade.collide(em, layerWalls);
-  
+
   em.body.velocity.x = 0;
-  
+
   if (cursors.left.isDown) {
     em.body.velocity.x = -150;
     if (facing != 'left') {
@@ -78,5 +81,10 @@ function update() {
       }
       facing = 'idle';
     } */
+  }
+  
+  if (jumpButton.isDown && em.body.onFloor() && game.time.now > jumpTimer) {
+    em.body.velocity.y = -250;
+    jumpTimer = game.time.now + 750;
   }
 }
