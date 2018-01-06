@@ -4,7 +4,8 @@ var game = new Phaser.Game(624, 384, Phaser.AUTO, '', {
   update: update
 });
 
-var bg, em, layerBg, walls, layerWalls, cursors;
+var em, bg, layerBg, walls, layerWalls, cursors;
+var facing = 'left';
 
 function preload() {
   game.load.tilemap('level1', '../tilemap/em-tilemap.json', null,
@@ -29,21 +30,53 @@ function create() {
   // walls layer
   walls = game.add.tilemap('level1');
   walls.addTilesetImage('PLAN1');
+  walls.enableBody = true;
   layerWalls = walls.createLayer('Walls');
-  game.physics.enable(walls, Phaser.Physics.ARCADE);
+  game.physics.enable(layerWalls, Phaser.Physics.ARCADE);
   // layerWalls.resizeWorld();
 
   game.physics.arcade.gravity.y = 200;
 
-  // player
+  // electroman
   em = game.add.sprite(100, 200, 'em');
   game.physics.enable(em, Phaser.Physics.ARCADE);
   em.body.collideWorldBounds = true;
+  
+  em.animations.add('left', [0], 10, true);
+  em.animations.add('turn', [0], 20, true);
+  em.animations.add('right', [0], 10, true);
+  
   game.camera.follow(em);
   
   cursors = game.input.keyboard.createCursorKeys();
 }
 
 function update() {
-  game.physics.arcade.collide(em, walls);
+  game.physics.arcade.collide(em, layerWalls);
+  
+  em.body.velocity.x = 0;
+  
+  if (cursors.left.isDown) {
+    em.body.velocity.x = -150;
+    if (facing != 'left') {
+      em.animations.play('left');
+      facing = 'left';
+    }
+  } else if (cursors.right.isDown) {
+      em.body.velocity.x = 150;
+      if (facing != 'right') {
+        em.animations.play('right');
+        facing = 'right';
+      }
+  } else {
+    /* if (facing != 'idle') {
+      em.animations.stop();
+      if (facing == 'left') {
+        em.frame = 0;
+      } else {
+        em.frame = 5;
+      }
+      facing = 'idle';
+    } */
+  }
 }
