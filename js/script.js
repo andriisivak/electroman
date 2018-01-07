@@ -26,30 +26,30 @@ function create() {
   map.addTilesetImage('PLAN1');
   
   // main background layer  
-  layerBg = map.createLayer('Background');
-  game.physics.enable(layerBg, Phaser.Physics.ARCADE);
+  layerBg = map.createLayer(0);
   layerBg.resizeWorld();
 
   // walls layer
-  layerWalls = map.createLayer('Walls');
-  game.physics.enable(layerWalls, Phaser.Physics.ARCADE);
+  layerWalls = map.createLayer(2);
+  game.physics.arcade.enable(layerWalls);
   layerWalls.resizeWorld();
 
   game.physics.arcade.gravity.y = 300;
   
   // electroman
-  em = game.add.sprite(100, 200, 'em');
-  game.physics.enable(em, Phaser.Physics.ARCADE);
+  em = game.add.sprite(100, 260, 'em');
+  game.physics.arcade.enable(em);
 
-  em.body.collideWorldBounds = true;
+  map.setCollisionBetween(0, 2);
 
   em.animations.add('left', [0], 10, true);
   em.animations.add('turn', [0], 20, true);
-  em.animations.add('right', [0], 10, true);
-
-  game.camera.follow(em);
+  em.animations.add('right', [7, 8, 9], 10, true);
   
-  map.setCollisionBetween(em, layerWalls);
+  game.physics.arcade.enable(em);
+  game.camera.follow(em, Phaser.Camera.FOLLOW_TOPDOWN);
+  
+  map.setCollisionBetween(0, 10000, true, layerWalls, true);
 
   cursors = game.input.keyboard.createCursorKeys();
 }
