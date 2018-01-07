@@ -40,8 +40,6 @@ function create() {
   em = game.add.sprite(100, 260, 'em');
   game.physics.arcade.enable(em);
 
-  map.setCollisionBetween(0, 2);
-
   em.animations.add('left', [17, 18, 19], 10, true);
   em.animations.add('turn', [0], 20, true);
   em.animations.add('right', [7, 8, 9], 10, true);
@@ -74,10 +72,12 @@ function update() {
   } else {
     if (facing != 'idle') {
       em.animations.stop();
-      if (facing == 'left') {
+      if (facing === 'left') {
+        em.frame = 4;
+      } else if (facing === 'right') {
         em.frame = 0;
       } else {
-        em.frame = 0;
+        em.frame = 2;
       }
       facing = 'idle';
     }
