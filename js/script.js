@@ -87,4 +87,12 @@ function update() {
     em.body.velocity.y = -200;
     jumpTimer = game.time.now + 750;
   }
+  
+  if (!em.body.onFloor() && facing === 'left') {
+    em.frame = 19;
+  }
+  
+  if (!em.body.onFloor() && facing === 'right') {
+    em.frame = 9;
+  }
 }
