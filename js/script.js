@@ -4,7 +4,7 @@ var game = new Phaser.Game(624, 384, Phaser.AUTO, '', {
   update: update
 });
 
-var em, bg, layerBg, walls, layerWalls, cursors, jumpButton;
+var map, layerBg, layerWalls, em, cursors, jumpButton;
 var facing = 'left';
 var jumpTimer = 0;
 
@@ -22,26 +22,25 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.stage.backgroundColor = '#000';
 
-  // main background layer
-  bg = game.add.tilemap('level1');
-  bg.addTilesetImage('PLAN1');
-  layerBg = bg.createLayer('Background');
-  // layerBg.resizeWorld();
+  map = game.add.tilemap('level1');
+  map.addTilesetImage('PLAN1');
+  
+  // main background layer  
+  layerBg = map.createLayer('Background');
+  game.physics.enable(layerBg, Phaser.Physics.ARCADE);
+  layerBg.resizeWorld();
 
   // walls layer
-  walls = game.add.tilemap('level1');
-  walls.addTilesetImage('PLAN1');
-  walls.enableBody = true;
-  layerWalls = walls.createLayer('Walls');
+  layerWalls = map.createLayer('Walls');
   game.physics.enable(layerWalls, Phaser.Physics.ARCADE);
-  // layerWalls.resizeWorld();
+  layerWalls.resizeWorld();
 
-  game.physics.arcade.gravity.y = 200;
-
+  game.physics.arcade.gravity.y = 300;
+  
   // electroman
   em = game.add.sprite(100, 200, 'em');
   game.physics.enable(em, Phaser.Physics.ARCADE);
-  
+
   em.body.collideWorldBounds = true;
 
   em.animations.add('left', [0], 10, true);
@@ -49,9 +48,10 @@ function create() {
   em.animations.add('right', [0], 10, true);
 
   game.camera.follow(em);
+  
+  map.setCollisionBetween(em, layerWalls);
 
   cursors = game.input.keyboard.createCursorKeys();
-  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
 function update() {
@@ -72,19 +72,19 @@ function update() {
         facing = 'right';
       }
   } else {
-    /* if (facing != 'idle') {
+    if (facing != 'idle') {
       em.animations.stop();
       if (facing == 'left') {
         em.frame = 0;
       } else {
-        em.frame = 5;
+        em.frame = 0;
       }
       facing = 'idle';
-    } */
+    }
   }
-  
-  if (jumpButton.isDown && em.body.onFloor() && game.time.now > jumpTimer) {
-    em.body.velocity.y = -250;
+
+  if (cursors.up.isDown && em.body.onFloor() && game.time.now > jumpTimer) {
+    em.body.velocity.y = -200;
     jumpTimer = game.time.now + 750;
   }
 }
