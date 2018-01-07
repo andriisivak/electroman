@@ -4,8 +4,8 @@ var game = new Phaser.Game(624, 384, Phaser.AUTO, '', {
   update: update
 });
 
-var map, layerBg, layerWalls, em, cursors, jumpButton;
-var facing = 'left';
+var map, layerBg, layerWalls, layerMonsters, em, cursors;
+var facing = 'right';
 var jumpTimer = 0;
 
 function preload() {
@@ -27,14 +27,16 @@ function create() {
 
   // main background layer  
   layerBg = map.createLayer(0);
-  layerBg.resizeWorld();
 
+  // monsters layer
+  layerMonsters = map.createLayer(1);
+  
   // walls layer
   layerWalls = map.createLayer(2);
-  game.physics.arcade.enable(layerWalls);
+  // game.physics.arcade.enable(layerWalls);
   layerWalls.resizeWorld();
-
-  game.physics.arcade.gravity.y = 300;
+  
+  game.physics.arcade.gravity.y = 700;
   
   // electroman
   em = game.add.sprite(100, 260, 'em');
@@ -84,7 +86,7 @@ function update() {
   }
 
   if (cursors.up.isDown && em.body.onFloor() && game.time.now > jumpTimer) {
-    em.body.velocity.y = -200;
+    em.body.velocity.y = -370;
     jumpTimer = game.time.now + 750;
   }
   
