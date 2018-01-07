@@ -24,7 +24,7 @@ function create() {
 
   map = game.add.tilemap('level1');
   map.addTilesetImage('PLAN1');
-  
+
   // main background layer  
   layerBg = map.createLayer(0);
   layerBg.resizeWorld();
@@ -42,7 +42,7 @@ function create() {
 
   map.setCollisionBetween(0, 2);
 
-  em.animations.add('left', [0], 10, true);
+  em.animations.add('left', [17, 18, 19], 10, true);
   em.animations.add('turn', [0], 20, true);
   em.animations.add('right', [7, 8, 9], 10, true);
   
