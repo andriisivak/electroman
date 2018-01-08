@@ -4,7 +4,7 @@ var game = new Phaser.Game(624, 384, Phaser.AUTO, '', {
   update: update
 });
 
-var map, layerBg, layerWalls, layerMonsters, em, cursors;
+var map, layerBg, layerObjects, layerMonsters, layerWalls, em, cursors;
 var facing = 'right';
 var jumpTimer = 0;
 
@@ -24,24 +24,30 @@ function create() {
 
   map = game.add.tilemap('level1');
   map.addTilesetImage('PLAN1');
+  map.addTilesetImage('PLAN2');
+  map.addTilesetImage('PLAN3');
+  map.addTilesetImage('PLAN4');
 
   // main background layer  
   layerBg = map.createLayer(0);
 
+  // objects layer  
+  layerObjects = map.createLayer(1);
+  
   // monsters layer
-  layerMonsters = map.createLayer(1);
+  layerMonsters = map.createLayer(2);
   
   // walls layer
-  layerWalls = map.createLayer(2);
-  // game.physics.arcade.enable(layerWalls);
+  layerWalls = map.createLayer(3);
+  game.physics.arcade.enable(layerWalls);
   layerWalls.resizeWorld();
   
   game.physics.arcade.gravity.y = 700;
   
   // electroman
-  em = game.add.sprite(100, 260, 'em');
+  em = game.add.sprite(144, 260, 'em');
   game.physics.arcade.enable(em);
-  em.body.setSize(28, 84, 10, 0);
+  em.body.setSize(28, 84, 10, 0); // set negative x-fields for em
 
   em.animations.add('left', [17, 18, 19], 10, true);
   em.animations.add('right', [7, 8, 9], 10, true);
