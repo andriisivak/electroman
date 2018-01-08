@@ -41,9 +41,9 @@ function create() {
   // electroman
   em = game.add.sprite(100, 260, 'em');
   game.physics.arcade.enable(em);
+  em.body.setSize(28, 84, 10, 0);
 
   em.animations.add('left', [17, 18, 19], 10, true);
-  em.animations.add('turn', [0], 20, true);
   em.animations.add('right', [7, 8, 9], 10, true);
   
   game.physics.arcade.enable(em);
@@ -58,7 +58,7 @@ function update() {
   game.physics.arcade.collide(em, layerWalls);
 
   em.body.velocity.x = 0;
-
+  
   if (cursors.left.isDown) {
     em.body.velocity.x = -150;
     if (facing != 'left') {
@@ -66,11 +66,11 @@ function update() {
       facing = 'left';
     }
   } else if (cursors.right.isDown) {
-      em.body.velocity.x = 150;
-      if (facing != 'right') {
-        em.animations.play('right');
-        facing = 'right';
-      }
+    em.body.velocity.x = 150;
+    if (facing != 'right') {
+      em.animations.play('right');
+      facing = 'right';
+    }
   } else {
     if (facing != 'idle') {
       em.animations.stop();
@@ -84,7 +84,7 @@ function update() {
       facing = 'idle';
     }
   }
-
+  
   if (cursors.up.isDown && em.body.onFloor() && game.time.now > jumpTimer) {
     em.body.velocity.y = -370;
     jumpTimer = game.time.now + 750;
